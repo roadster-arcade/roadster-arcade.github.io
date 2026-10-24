@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#040507">
+  <title>Tesla Roadster Game — Play Free Tesla Car Game Online &amp; App</title>
+  <meta name="description" content="Play the free Tesla Roadster car game online! Fly the new Tesla Roadster through night traffic: jump over Cybertrucks and cars, do flips, and rocket boost. Installable retro pixel game app for mobile and desktop.">
+  <meta name="keywords" content="Tesla car game, Tesla game, Tesla Roadster game, Tesla game app, Tesla game site, play Tesla car game online, Tesla Roadster 2026, Cybertruck game, pixel car game, retro racing game, Tesla flight game, Elon Musk Roadster game">
+  <meta name="author" content="_searchr_">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://roadster-arcade.github.io/">
+
+  <!-- Mobile & PWA App Metadata -->
+  <meta name="application-name" content="Tesla Roadster Game">
+  <meta name="apple-mobile-web-app-title" content="Tesla Roadster">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Open Graph / Facebook / WhatsApp / Discord / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tesla Roadster Game">
+  <meta property="og:url" content="https://roadster-arcade.github.io/">
+  <meta property="og:title" content="Tesla Roadster Game — The Tesla Car Game That Flies">
+  <meta property="og:description" content="Fly the new Tesla Roadster through night traffic! Jump cars, flip, and rocket boost in this addictive retro pixel game. Play free in browser or install as app.">
+  <meta property="og:image" content="https://roadster-arcade.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Tesla Roadster Pixel Art Game Preview">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@_searchr_">
+  <meta name="twitter:creator" content="@_searchr_">
+  <meta name="twitter:title" content="Tesla Roadster Game — Free Tesla Car Game">
+  <meta name="twitter:description" content="Jump cars, dodge Cybertrucks, do backflips and rocket boost with the new Tesla Roadster. Free browser game & app!">
+  <meta name="twitter:image" content="https://roadster-arcade.github.io/og-image.png">
+
+  <!-- Structured Data / JSON-LD for Google Game & WebApp Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Tesla Roadster Game",
+    "alternateName": [
+      "Tesla Car Game",
+      "Tesla Roadster Web App",
+      "Tesla Game Online",
+      "Tesla Flying Car Game"
+    ],
+    "description": "Fly the new Tesla Roadster through night traffic: jump over Cybertrucks, do flips, and rocket boost in this retro pixel-art browser game and app.",
+    "url": "https://roadster-arcade.github.io/",
+    "image": "https://roadster-arcade.github.io/og-image.png",
+    "genre": ["Racing", "Arcade", "Action", "Pixel Art"],
+    "playMode": "SinglePlayer",
+    "applicationCategory": "Game",
+    "operatingSystem": "All (Web Browser, iOS, Android, Windows, macOS)",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "_searchr_",
+      "url": "https://www.instagram.com/_searchr_/"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --page: #040507;
+      --focus: #7fe3ff;
+      --note-h: 20px;
+      --bezel: #15171c;
+      --cap: #2b2e34;
+      --cap-face: #353940;
+      --cap-side: #121317;
+      --well: #07080a;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: var(--page);
+      overflow: hidden;
+    }
+
+    /* The canvas fills the window edge to edge, above the note. */
+    #stage {
+      inset: 0 0 var(--note-h) 0;
+      overflow: hidden;
+      position: fixed;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #stage:focus {
+      outline: none;
+    }
+
+    #game {
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    /* The pixel-art button is drawn on the canvas; this real button sits on
+       top of it so it can be clicked, tabbed to and read by screen readers. */
+    #play-again {
+      background: transparent;
+      border: 0;
+      color: transparent;
+      cursor: pointer;
+      padding: 0;
+      position: absolute;
+    }
+
+    #play-again:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    #share {
+      background: transparent;
+      border: 0;
+      color: transparent;
+      cursor: pointer;
+      padding: 0;
+      position: absolute;
+    }
+
+    #share:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    #hud,
+    #pad {
+      display: none;
+    }
+
+    #hud,
+    #pad canvas,
+    #note canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    /* Always visible: this is a fan concept, not a Tesla product. */
+    #note {
+      align-items: center;
+      bottom: 0;
+      display: flex;
+      height: var(--note-h);
+      justify-content: center;
+      left: 0;
+      margin: 0;
+      position: fixed;
+      right: 0;
+    }
+
+    /* Held upright (phones): a handheld console. The HUD stands on its
+       own at the top and only the 4:3 game screen sits in a frame. Below,
+       the two flip keys sit above a space-bar-wide Jump key, lined up with
+       its ends. Spread over the height so the keys fall under the thumbs;
+       the note stays at the bottom. The game sizes the HUD, screen and keys
+       to fit. */
+    body.handheld {
+      background: radial-gradient(120% 70% at 50% 30%, #0e1014 0%, var(--page) 70%);
+      touch-action: manipulation;
+    }
+
+    body.handheld #console {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      inset: 0;
+      justify-content: space-evenly;
+      padding: max(14px, env(safe-area-inset-top)) 16px calc(var(--note-h) + max(8px, env(safe-area-inset-bottom)));
+      position: fixed;
+    }
+
+    body.handheld #screen {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    body.handheld #hud {
+      display: block;
+    }
+
+    /* The same radius on every corner; the screen's is smaller by the
+       frame's width, so the two curves run parallel. */
+    body.handheld #frame {
+      background: var(--bezel);
+      border-radius: 18px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 18px 40px rgba(0, 0, 0, 0.55);
+      padding: 8px;
+    }
+
+    body.handheld #stage {
+      border-radius: 10px;
+      inset: auto;
+      position: relative;
+    }
+
+    body.handheld #pad {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* The flip keys share the row, a gap apart, as wide rectangles. */
+    .flips {
+      display: flex;
+      gap: 26px;
+    }
+
+    .flips .control {
+      flex: 1;
+    }
+
+    .flips .key {
+      width: 100%;
+    }
+
+    /* A key with its label centred under it. The label may be wider than
+       the key; it hangs over both sides so the key's edges stay aligned. */
+    .control {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+      position: relative;
+    }
+
+    .control .label {
+      bottom: 0;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    /* A vintage mechanical key in dark mode: a sculpted cap with a dished
+       top, standing on tall sides in a recessed switch well. Pressed, it
+       travels down and its legend lights up. */
+    .key {
+      --travel: 6px;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      height: 64px;
+      padding: 0;
+      position: relative;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      width: 76px;
+    }
+
+    .key.jump {
+      height: 60px;
+      width: 100%;
+    }
+
+    .key::before {
+      background: var(--well);
+      border-radius: 15px;
+      box-shadow:
+        inset 0 3px 6px rgba(0, 0, 0, 0.9),
+        0 1px 0 rgba(255, 255, 255, 0.05);
+      content: '';
+      inset: -6px -6px -5px;
+      position: absolute;
+    }
+
+    .cap {
+      align-items: center;
+      background: linear-gradient(180deg, #34373e 0%, var(--cap) 55%, #24272c 100%);
+      border-radius: 11px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.09),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.25),
+        0 var(--travel) 0 var(--cap-side),
+        0 calc(var(--travel) + 2px) 7px rgba(0, 0, 0, 0.75);
+      display: flex;
+      inset: 0 0 var(--travel) 0;
+      justify-content: center;
+      position: absolute;
+      transition: transform 45ms ease-out, box-shadow 45ms ease-out;
+    }
+
+    /* The dished top face, inset from the cap's skirt. */
+    .cap::before {
+      background: radial-gradient(90% 80% at 50% 35%, #3c4048 0%, var(--cap-face) 45%, #2a2d33 100%);
+      border-radius: 8px;
+      box-shadow:
+        inset 0 2px 3px rgba(0, 0, 0, 0.35),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        0 1px 0 rgba(255, 255, 255, 0.05);
+      content: '';
+      inset: 4px 6px 8px;
+      position: absolute;
+    }
+
+    .cap canvas {
+      margin-bottom: 4px;
+      position: relative;
+      transition: filter 45ms ease-out;
+    }
+
+    .key.down .cap {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.25),
+        0 1px 0 var(--cap-side),
+        0 2px 3px rgba(0, 0, 0, 0.75);
+      transform: translateY(calc(var(--travel) - 1px));
+    }
+
+    .key.down .cap canvas {
+      filter: brightness(1.25) drop-shadow(0 0 5px var(--glow));
+    }
+
+    .key.back { --glow: rgba(255, 165, 61, 0.7); }
+    .key.jump { --glow: rgba(242, 243, 245, 0.6); }
+    .key.front { --glow: rgba(127, 227, 255, 0.7); }
+
+    .key:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 8px;
+      border-radius: 12px;
+    }
+
+    /* The credit: a small glass tag under the score, linking to the
+       maker's Instagram. The game sizes and places it. */
+    #credit {
+      -webkit-backdrop-filter: blur(6px) saturate(140%);
+      backdrop-filter: blur(6px) saturate(140%);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.35);
+      display: flex;
+      position: fixed;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 120ms ease-out, border-color 120ms ease-out;
+      z-index: 2;
+    }
+
+    #credit:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    #credit:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    #credit canvas {
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .sr-only {
+      clip: rect(0 0 0 0);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    /* ── Landscape mobile: floating flip buttons, side-by-side ───────── */
+    #landscape-pad {
+      display: none;
+    }
+
+    body.landscape-mobile #landscape-pad {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: fixed;
+      bottom: 50%;
+      transform: translateY(50%);
+      left: max(8px, env(safe-area-inset-left));
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px) saturate(130%);
+      -webkit-backdrop-filter: blur(8px) saturate(130%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 36px;
+      pointer-events: auto;
+      z-index: 10;
+      transition: left 250ms ease, right 250ms ease;
+    }
+
+    /* When the user flips to the right side */
+    body.landscape-mobile #landscape-pad.right-side {
+      left: auto;
+      right: max(8px, env(safe-area-inset-right));
+    }
+
+    .ls-flip {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      transition: background 80ms ease-out, transform 60ms ease-out,
+                  border-color 80ms ease-out, box-shadow 80ms ease-out;
+    }
+
+    .ls-flip:active,
+    .ls-flip.active {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: scale(0.92);
+    }
+
+    /* Glow per button */
+    .ls-flip.ls-back  { color: rgba(255, 165, 61, 0.85); }
+    .ls-flip.ls-front { color: rgba(127, 227, 255, 0.85); }
+
+    .ls-flip.ls-back:active,
+    .ls-flip.ls-back.active {
+      box-shadow: 0 0 14px rgba(255, 165, 61, 0.35);
+    }
+    .ls-flip.ls-front:active,
+    .ls-flip.ls-front.active {
+      box-shadow: 0 0 14px rgba(127, 227, 255, 0.35);
+    }
+
+    /* Toggle to pick which side the flip buttons sit on — top center */
+    #ls-toggle {
+      display: none;
+    }
+
+    body.landscape-mobile #ls-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: fixed;
+      top: max(6px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px) saturate(130%);
+      -webkit-backdrop-filter: blur(8px) saturate(130%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 15;
+      padding: 0;
+    }
+
+    .ls-opt {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.25);
+      font: 600 9px/1 system-ui, -apple-system, sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: background 100ms, color 100ms;
+    }
+
+    .ls-opt.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="sr-only">Tesla Roadster — Free Tesla Car Game Online &amp; Web App</h1>
+  <div id="console">
+    <div id="screen">
+      <canvas id="hud" aria-hidden="true"></canvas>
+      <div id="frame">
+        <div id="stage" tabindex="-1">
+          <canvas id="game" width="640" height="270" role="img"
+              aria-label="Roadster game. Press space to jump, tap again to boost, hold to fly. Left arrow backflips, right arrow front flips."></canvas>
+          <button id="play-again" type="button" hidden>Play again</button>
+          <button id="share" type="button" hidden>Share score</button>
+        </div>
+      </div>
+    </div>
+    <div id="pad" role="group" aria-label="Controls">
+      <div class="flips">
+        <div class="control">
+          <button class="key back" data-key="back" type="button" aria-label="Back flip"><span class="cap"><canvas></canvas></span></button>
+          <canvas class="label" aria-hidden="true"></canvas>
+        </div>
+        <div class="control">
+          <button class="key front" data-key="front" type="button" aria-label="Front flip"><span class="cap"><canvas></canvas></span></button>
+          <canvas class="label" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="control">
+        <button class="key jump" data-key="jump" type="button" aria-label="Jump"><span class="cap"><canvas></canvas></span></button>
+        <canvas class="label" aria-hidden="true"></canvas>
+      </div>
+    </div>
+    <p id="note"><canvas aria-hidden="true"></canvas><span id="note-text" class="sr-only">A playful fan-made concept. Not affiliated with Tesla.</span></p>
+  <!-- Landscape mobile: floating flip controls -->
+  <div id="landscape-pad" aria-label="Landscape flip controls" role="group">
+    <button class="ls-flip ls-back" data-ls-key="back" type="button" aria-label="Back flip">↶</button>
+    <button class="ls-flip ls-front" data-ls-key="front" type="button" aria-label="Front flip">↷</button>
+  </div>
+  <div id="ls-toggle" aria-label="Flip buttons position">
+    <button class="ls-opt" data-side="left" type="button">Left</button>
+    <button class="ls-opt active" data-side="right" type="button">Right</button>
+  </div>
+  </div>
+  <a id="credit" href="https://www.instagram.com/_searchr_/" target="_blank" rel="noopener"
+      aria-label="Made by @_searchr_ on Instagram (opens in a new tab)"><canvas aria-hidden="true"></canvas></a>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+
+  <script src="js/pixel.js?v=20261024170000"></script>
+  <script src="js/sprites.js?v=20261024170000"></script>
+  <script src="js/audio.js?v=20261024170000"></script>
+  <script src="js/game.js?v=20261024170000"></script>
+  <script>
+    setFavicon();
+    window.game = new Game(
+        document.getElementById('game'),
+        document.getElementById('play-again'),
+        document.getElementById('live'),
+        document.getElementById('share'));
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
+  <!-- Cloudflare Web Analytics -->
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8e3fd9d55c3c4ce6b4e4998fbf923aad"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

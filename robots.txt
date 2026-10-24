@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /js/
+Disallow: /*.js$
+Disallow: /*.js?*
+Allow: /
+
+Sitemap: https://roadster-arcade.github.io/sitemap.xml

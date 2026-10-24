@@ -1,0 +1,23 @@
+{
+  "name": "Tesla Roadster — Car Game & App",
+  "short_name": "Tesla Roadster",
+  "description": "Fly the new Tesla Roadster through night traffic: jump Cybertrucks, do flips, and rocket boost. Play free online or install as an app.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#040507",
+  "theme_color": "#040507",
+  "categories": ["games", "entertainment", "arcade"],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
